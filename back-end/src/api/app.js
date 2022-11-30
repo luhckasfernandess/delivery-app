@@ -1,7 +1,8 @@
 const express = require('express');
+const Router = require('../controller/routes/routes');
 
 const app = express();
+app.use(Router);
 
-app.get('/coffee', (_req, res) => res.status(418).end());
 
 module.exports = app;
