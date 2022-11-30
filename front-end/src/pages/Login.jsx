@@ -58,7 +58,7 @@ function Login() {
 
   return (
     <section className="user-login-area">
-      <img src={ deliveryLogo } alt=" Logo" />
+      <img src={ deliveryLogo } alt="Delivery App Logo" />
       <form>
         <h1>Login</h1>
         <label htmlFor="email-input">
