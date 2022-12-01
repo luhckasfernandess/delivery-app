@@ -2,6 +2,8 @@ const {
   checkUserService,
   getUserService,
   createNewUserService,
+  verifyUserService,
+  registerNewUserService,
 } = require('../service/user.service');
 
 const checkUserController = async (body) => {
