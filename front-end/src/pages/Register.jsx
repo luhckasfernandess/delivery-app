@@ -12,7 +12,7 @@ function Register() {
   const [failedTryCreate, setFailedTryCreate] = useState(false);
 
   const verifyRegisterForm = () => {
-    const regex = /^[a-z0-9.]+@[a-z0-9]+\.[a-z]+(\.[a-z]+)?$/i;
+    const regex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
     const minPasswordLength = 6;
     const minNameLength = 12;
 
