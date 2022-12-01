@@ -35,7 +35,7 @@ const createNewUserService = async (body) => {
   if (!findNameOrEmail) {
     const md5decrypted = md5(password);
     const newUser = await User.create({
-      name, email, password: md5decrypted,
+      name, email, password: md5decrypted, role: 'customer',
     });
     return newUser;    
   } return null;
