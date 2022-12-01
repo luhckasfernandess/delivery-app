@@ -1,7 +1,11 @@
 const express = require('express');
 
 const UsersRouter = express.Router();
-const { checkUserController, getUserController, createNewUserController } = require('../controller/user.controller');
+const {
+  checkUserController,
+  getUserController,
+  createNewUserController
+} = require('../controller/user.controller');
 
 UsersRouter.post('/login', async (req, res) => {
   const { body } = req;

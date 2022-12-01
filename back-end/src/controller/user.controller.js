@@ -1,4 +1,8 @@
-const { checkUserService, getUserService, createNewUserService } = require('../service/user.service');
+const {
+  checkUserService,
+  getUserService,
+  createNewUserService
+} = require('../service/user.service');
 
 const checkUserController = async (body) => {
   const result = await checkUserService(body);
