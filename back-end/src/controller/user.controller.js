@@ -1,8 +1,16 @@
-const userService = require('../service/user.service')
+const { checkUserService, getUserService } = require('../service/user.service')
 
-const userController = async (body) => {
-  const result = await userService(body)
+const checkUserController = async (body) => {
+  const result = await checkUserService(body)
   return result;
 }
 
-module.exports = userController
+const getUserController = async (token) => {
+  const getUser = await getUserService(token)
+  return getUser;
+}
+
+module.exports = {
+  checkUserController,
+  getUserController,
+}
