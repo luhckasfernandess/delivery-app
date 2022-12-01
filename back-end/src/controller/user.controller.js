@@ -13,7 +13,7 @@ const getUserController = async (token) => {
 const createNewUserController = async (body) => {
   const createUser = await createNewUserService(body);
   return createUser;
-}
+};
 
 module.exports = {
   checkUserController,

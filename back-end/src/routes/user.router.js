@@ -18,9 +18,9 @@ UsersRouter.get('/login', async (req, res) => {
 });
 
 UsersRouter.post('/register', async (req, res) => {
-  const newUser = await createNewUserController(req.body)
-  if (!newUser) return res.status(409).json('Nome ou Email já existente')
-  return res.status(201).json('Usuário criado')
-})
+  const newUser = await createNewUserController(req.body);
+  if (!newUser) return res.status(409).json('Nome ou Email já existente');
+  return res.status(201).json('Usuário criado');
+});
 
 module.exports = UsersRouter;

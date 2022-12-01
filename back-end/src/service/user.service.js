@@ -1,7 +1,7 @@
 const md5 = require('md5');
 const jwt = require('jsonwebtoken');
+const { Op } = require('sequelize');
 const { User } = require('../database/models');
-const { Op } = require("sequelize");
 
 const checkUserService = async (body) => {
   const { email, password } = body;
@@ -31,18 +31,18 @@ const getUserService = async (token) => {
 const createNewUserService = async (body) => {
   const { name, email, password } = body;
   const findNameOrEmail = await User.findOne({
-    where: {[Op.or]: [{ name },{ email }]}});
+    where: { [Op.or]: [{ name }, { email }] } });
   if (!findNameOrEmail) {
     const md5decrypted = md5(password);
     const newUser = await User.create({
-      name, email, password: md5decrypted
-    })
-    return newUser    
-  } return null
-}
+      name, email, password: md5decrypted,
+    });
+    return newUser;    
+  } return null;
+};
 
 module.exports = {
   checkUserService,
   getUserService,
-  createNewUserService
+  createNewUserService,
 };
