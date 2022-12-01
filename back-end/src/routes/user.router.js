@@ -1,13 +1,19 @@
 const express = require('express');
 const UsersRouter = express.Router();
-const userController = require('../controller/user.controller')
+const { checkUserController, getUserController } = require('../controller/user.controller')
 
-UsersRouter.post('/users', async (req, res) => {
+UsersRouter.post('/login', async (req, res) => {
   const { body } = req;
-  console.log(body);
-  const result = await userController(body);
-  if(!result) return res.status(404).json('usuário ou senha inválidos')
-  return res.status(200).json('usuário encontrado')
+  const result = await checkUserController(body);
+  if (!result) return res.status(404).json('usuário ou senha inválidos')
+  return res.status(200).json({ token: result })
+})
+
+UsersRouter.get('/login', async (req, res) => {
+  const token = req.headers.authorization;
+  const result = await getUserController(token);
+  if (!result) return res.status(404).json('usuário ou senha inválidos')
+  return res.status(200).json(result)
 })
 
 module.exports = UsersRouter
