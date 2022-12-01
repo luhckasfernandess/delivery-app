@@ -4,7 +4,7 @@ import deliveryLogo from '../images/rockGlass.svg';
 import { requestLogin } from '../services/requests';
 
 function Register() {
-  const [username, setUserName] = useState('');
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isCreated, setIsCreated] = useState(false);
@@ -12,13 +12,13 @@ function Register() {
   const [failedTryCreate, setFailedTryCreate] = useState(false);
 
   const verifyRegisterForm = () => {
-    const regex = /^[a-z0-9.]+@[a-z0-9]+\.[a-z]+(\.[a-z]+)?$/i;
+    const regex = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/gi;
     const minPasswordLength = 6;
-    const minUsernameLength = 12;
+    const minNameLength = 12;
 
     if (regex.test(email)
     && password.length >= minPasswordLength
-    && username.length > minUsernameLength) {
+    && name.length > minNameLength) {
       setInvalidRegisterForm(false);
     } else {
       setInvalidRegisterForm(true);
@@ -28,8 +28,7 @@ function Register() {
   const accountCreate = async (e) => {
     e.preventDefault();
     try {
-      await requestLogin('/register', { username, email, password });
-      alert('Usuário Criado');
+      await requestLogin('/register', { name, email, password });
       setIsCreated(true);
     } catch (error) {
       setFailedTryCreate(true);
@@ -40,10 +39,10 @@ function Register() {
   useEffect(() => {
     setFailedTryCreate(false);
     verifyRegisterForm();
-  }, [username, email, password]);
+  }, [name, email, password]);
 
   if (isCreated) {
-    return <Navigate to="/" />;
+    return <Navigate to="/customer/products" />;
   }
 
   return (
@@ -54,8 +53,8 @@ function Register() {
         <label htmlFor="name-input">
           <input
             type="text"
-            value={ username }
-            onChange={ ({ target: { value } }) => setUserName(value) }
+            value={ name }
+            onChange={ ({ target: { value } }) => setName(value) }
             data-testid="common_register__input-name"
             placeholder="Username"
           />
@@ -83,7 +82,7 @@ function Register() {
             ? (
               <p data-testid="common_register__element-invalid_register">
                 {
-                  `O endereço de e-mail ou a senha não estão corretos.
+                  `O endereço de e-mail ou o username já estão sendo usados.
                     Por favor, tente novamente.`
                 }
               </p>

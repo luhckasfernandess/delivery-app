@@ -13,7 +13,7 @@ function Login() {
   const navigate = useNavigate();
 
   const verifyLoginForm = () => {
-    const regex = /^[a-z0-9.]+@[a-z0-9]+\.[a-z]+(\.[a-z]+)?$/i;
+    const regex = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/gi;
     const minPasswordLength = 6;
     if (regex.test(email) && password.length >= minPasswordLength) {
       setInvalidLoginForm(false);
