@@ -29,7 +29,7 @@ function Login() {
 
       setToken(token);
 
-      const { role } = await requestData('/login/validate', { email, password });
+      const { role } = await requestData('/login');
 
       localStorage.setItem('token', token);
       setRoleData(role);
