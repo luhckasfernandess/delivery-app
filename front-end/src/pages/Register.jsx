@@ -12,7 +12,7 @@ function Register() {
   const [failedTryCreate, setFailedTryCreate] = useState(false);
 
   const verifyRegisterForm = () => {
-    const regex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+    const regex = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/gi;
     const minPasswordLength = 6;
     const minNameLength = 12;
 
@@ -29,7 +29,6 @@ function Register() {
     e.preventDefault();
     try {
       await requestLogin('/register', { name, email, password });
-      alert('Usuário Criado');
       setIsCreated(true);
     } catch (error) {
       setFailedTryCreate(true);
@@ -43,7 +42,7 @@ function Register() {
   }, [name, email, password]);
 
   if (isCreated) {
-    return <Navigate to="/" />;
+    return <Navigate to="/customer/products" />;
   }
 
   return (
