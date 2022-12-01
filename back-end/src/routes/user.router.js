@@ -4,7 +4,7 @@ const UsersRouter = express.Router();
 const {
   checkUserController,
   getUserController,
-  createNewUserController
+  createNewUserController,
 } = require('../controller/user.controller');
 
 UsersRouter.post('/login', async (req, res) => {
