@@ -44,23 +44,23 @@ const createNewUserService = async (body) => {
 const getAllUsers = async () => {
   const allUsers = await User.findAll();
   return allUsers;
-}
+};
 
 const registerNewUserService = async (user) => {
   const newUser = await User.create({
     name: user.name, password: md5(user.password), email: user.email, role: user.role,
-  })
+  });
   return newUser;
-}
+};
 
 const deleteUserService = async (user) => {
   const userDelete = await User.destroy({
     where: {
-      name: user.name
-    }
-  })
+      name: user.name,
+    },
+  });
   return userDelete;
-}
+};
 
 module.exports = {
   checkUserService,
