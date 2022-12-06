@@ -58,6 +58,7 @@ const getAllUsers = async (token) => {
 };
 
 const registerNewUserService = async (user) => {
+
   const { name, email } = user;
   const findNameOrEmail = await User.findOne({
     where: { [Op.or]: [{ name }, { email }] },
