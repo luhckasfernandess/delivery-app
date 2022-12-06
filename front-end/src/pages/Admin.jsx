@@ -21,7 +21,7 @@ function Admin() {
 
     if (regex.test(email)
     && password.length >= minPasswordLength
-    && username.length > minUsernameLength) {
+    && username.length >= minUsernameLength) {
       setInvalidRegisterForm(false);
     } else {
       setInvalidRegisterForm(true);
