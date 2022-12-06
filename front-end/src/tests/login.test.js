@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
-import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter, MemoryRouter } from 'react-router-dom';
 import userEvent from '@testing-library/user-event';
 import App from '../App';
 // import renderWithRouter from './utils/renderWithRouter';
@@ -68,6 +68,29 @@ describe('Testando a tela de login', () => {
 
     await waitFor(() => {
       expect(screen.getByTestId('common_login__element-invalid-email'))
+        .toBeInTheDocument();
+    });
+  });
+
+  it('Verifica se é possível fazer login com um usuário cadastrado', async () => {
+    render(
+      <MemoryRouter initialEntries={ ['/'] }>
+        <App />
+      </MemoryRouter>,
+    );
+
+    const inputEmail = screen.getByTestId(emailInputId);
+    const inputPassword = screen.getByTestId(passwordInputId);
+    const loginBtn = screen.getByTestId(loginBtnId);
+
+    userEvent.type(inputEmail, 'adm@deliveryapp.com');
+    userEvent.type(inputPassword, '--adm2@21!!--');
+    userEvent.click(loginBtn);
+
+    await waitFor(() => {
+      expect(screen.getByRole('heading', {
+        name: /cadastrar novo usuário/i,
+      }))
         .toBeInTheDocument();
     });
   });
