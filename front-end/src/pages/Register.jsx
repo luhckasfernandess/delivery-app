@@ -18,7 +18,7 @@ function Register() {
 
     if (regex.test(email)
     && password.length >= minPasswordLength
-    && name.length > minNameLength) {
+    && name.length >= minNameLength) {
       setInvalidRegisterForm(false);
     } else {
       setInvalidRegisterForm(true);
