@@ -15,7 +15,7 @@ UsersRouter.post('/login', async (req, res, next) => {
     if (!result) return res.status(404).json('usuário ou senha inválidos');
     return res.status(200).json({ token: result });
   } catch (e) {
-    next(e)
+    next(e);
   }
 });
 
@@ -26,7 +26,7 @@ UsersRouter.get('/login', async (req, res, next) => {
     if (!result) return res.status(404).json('usuário ou senha inválidos');
     return res.status(200).json(result);
   } catch (e) {
-    next(e)
+    next(e);
   }
 });
 
@@ -36,7 +36,7 @@ UsersRouter.post('/register', async (req, res, next) => {
     if (!newUser) return res.status(409).json('Nome ou Email já existente');
     return res.status(201).json('Usuário criado');
   } catch (e) {
-    next(e)
+    next(e);
   }
 });
 
