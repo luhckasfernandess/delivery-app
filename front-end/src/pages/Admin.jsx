@@ -1,19 +1,21 @@
 import { useEffect, useState } from 'react';
-import { requestLogin } from '../services/requests';
+import { Navigate } from 'react-router-dom';
+import { deleteData, requestData, requestLogin, setToken } from '../services/requests';
 
 function Admin() {
   const [username, setUserName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [role, setRole] = useState('customer');
+  const [allUsers, setAllUsers] = useState([]);
   const [invalidRegisterForm, setInvalidRegisterForm] = useState(true);
   const [failedTryCreate, setFailedTryCreate] = useState(false);
 
-  const MOCK_TABLE = [{ item: 1, nome: 'Zé', email: 'zé@email.com', tipo: 'Vendedor' },
-    { item: 2, nome: 'Tadeu', email: 'tadeu@email.com', tipo: 'Comprador' }];
+  // const MOCK_TABLE = [{ item: 1, nome: 'Zé', email: 'zé@email.com', tipo: 'Vendedor' },
+  //   { item: 2, nome: 'Tadeu', email: 'tadeu@email.com', tipo: 'Comprador' }];
 
   const verifyRegisterForm = () => {
-    const regex = /^[a-z0-9.]+@[a-z0-9]+\.[a-z]+(\.[a-z]+)?$/i;
+    const regex = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/gi;
     const minPasswordLength = 6;
     const minUsernameLength = 12;
 
@@ -26,13 +28,40 @@ function Admin() {
     }
   };
 
+  const getAllUsers = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      setToken(token);
+      const users = await requestData('/admin');
+      setAllUsers(users);
+    } catch (error) {
+      return <Navigate to="/" />;
+    }
+  };
   const accountCreate = async (e) => {
     e.preventDefault();
     try {
-      await requestLogin('/admin/register', { username, email, password, role });
-      alert('Usuário Criado');
+      const token = localStorage.getItem('token');
+      setToken(token);
+      await requestLogin('/admin/register', { name: username, email, password, role });
+      setUserName('');
+      setEmail('');
+      setPassword('');
+      getAllUsers();
     } catch (error) {
       setFailedTryCreate(true);
+    }
+  };
+
+  const deleteUser = async (e) => {
+    try {
+      const token = localStorage.getItem('token');
+      setToken(token);
+      const { target: { value: name } } = e;
+      await deleteData('/admin/delete', { name });
+      getAllUsers();
+    } catch (error) {
+      console.log('erro');
     }
   };
 
@@ -40,6 +69,10 @@ function Admin() {
     setFailedTryCreate(false);
     verifyRegisterForm();
   }, [username, email, password]);
+
+  useEffect(() => {
+    getAllUsers();
+  }, []);
 
   return (
     <section>
@@ -78,9 +111,10 @@ function Admin() {
             name="type-select"
             id="type-select"
             value={ role }
+            data-testid="admin_manage__select-role"
             onChange={ ({ target: { value } }) => setRole(value) }
           >
-            <option value="admin">Administrador</option>
+            <option value="administrator">Administrador</option>
             <option value="seller">Vendedor</option>
             <option value="customer">Cliente</option>
           </select>
@@ -98,7 +132,7 @@ function Admin() {
             : null
         }
         <button
-          data-testid="common_register__button-register"
+          data-testid="admin_manage__button-register"
           type="submit"
           onClick={ (event) => accountCreate(event) }
           disabled={ invalidRegisterForm }
@@ -117,17 +151,18 @@ function Admin() {
           </tr>
         </thead>
         <tbody>
-          {MOCK_TABLE.map((data, index) => (
+          {(allUsers.length !== 0)
+          && allUsers.map((data, index) => (
             <tr key={ data.item }>
               <th
                 data-testid={ `admin_manage__element-user-table-item-number-${index}` }
               >
-                {data.item}
+                {data.id}
               </th>
               <th
                 data-testid={ `admin_manage__element-user-table-name-${index}` }
               >
-                {data.nome}
+                {data.name}
               </th>
               <th
                 data-testid={ `admin_manage__element-user-table-email-${index}` }
@@ -137,12 +172,18 @@ function Admin() {
               <th
                 data-testid={ `admin_manage__element-user-table-role-${index}` }
               >
-                {data.tipo}
+                {data.role}
               </th>
               <th
                 data-testid={ `admin_manage__element-user-table-remove-${index}` }
               >
-                <button type="button">Excluir</button>
+                <button
+                  type="button"
+                  value={ data.name }
+                  onClick={ (e) => deleteUser(e) }
+                >
+                  Excluir
+                </button>
               </th>
             </tr>))}
         </tbody>

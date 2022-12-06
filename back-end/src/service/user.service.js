@@ -1,21 +1,24 @@
 const md5 = require('md5');
 const jwt = require('jsonwebtoken');
 const { Op } = require('sequelize');
+const fs = require('fs');
 const { User } = require('../database/models');
+
+const secret = fs.readFileSync('jwt.evaluation.key', { encoding: 'utf-8' });
 
 const checkUserService = async (body) => {
   const { email, password } = body;
   const md5decrypted = md5(password);
   const result = await User.findOne({ where: { email, password: md5decrypted } });
   if (result) {
-    const generateToken = jwt.sign({ email, password }, 'grupo20');
+    const generateToken = jwt.sign({ email, password }, secret);
     return generateToken;
   }
   return result;
 };
 
 const getUserService = async (token) => {
-  const decrypt = jwt.verify(token, 'grupo20');
+  const decrypt = jwt.verify(token, secret);
   const md5decrypted = md5(decrypt.password);
   const result = await User.findOne({ where: { email: decrypt.email, password: md5decrypted } });
   if (result) {
@@ -42,7 +45,7 @@ const createNewUserService = async (body) => {
 };
 
 const getAllUsers = async (token) => {
-  const decryptToken = jwt.verify(token, 'grupo20');
+  const decryptToken = jwt.verify(token, secret);
   const allUsers = await User.findAll({
     attributes: { exclude: ['password'] },
     where: {
