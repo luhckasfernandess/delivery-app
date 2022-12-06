@@ -41,16 +41,31 @@ const createNewUserService = async (body) => {
   } return null;
 };
 
-const getAllUsers = async () => {
-  const allUsers = await User.findAll();
+const getAllUsers = async(token) => {
+  const decryptToken = jwt.verify(token, 'grupo20');
+  const allUsers = await User.findAll({
+    attributes: { exclude: ['password'] },
+    where: {
+      email: {
+        [Op.notLike]: decryptToken.email
+      }
+    }
+  });
   return allUsers;
 }
 
+
 const registerNewUserService = async (user) => {
-  const newUser = await User.create({
-    name: user.name, password: md5(user.password), email: user.email, role: user.role,
-  })
-  return newUser;
+  const { name, email } = user
+  const findNameOrEmail = await User.findOne({
+    where: { [Op.or]: [{ name }, { email }] }
+  });
+  if (!findNameOrEmail) {
+    const newUser = await User.create({
+      name: user.name, password: md5(user.password), email: user.email, role: user.role,
+    })
+    return newUser;
+  } return null;
 }
 
 const deleteUserService = async (user) => {

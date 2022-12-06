@@ -3,8 +3,8 @@ const { getAllUsers,
   deleteUserService,
 } = require('../service/user.service')
 
-const getAllUsersAdminController = async () => {
-  const allUsers = await getAllUsers();
+const getAllUsersAdminController = async (token) => {
+  const allUsers = await getAllUsers(token);
   return allUsers;
 }
 

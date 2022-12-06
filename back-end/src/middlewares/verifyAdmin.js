@@ -10,9 +10,9 @@ const verifyAdmin = async (req, res, next) => {
     const findAdmUser = await User.findOne({
       where: { [Op.and]: [{ email: decryptToken.email }, { role: 'administrator' }] }
     });
-    if (!findAdmUser) return res.status(401).json('Admin necessário')
+    if (!findAdmUser) return res.status(401).json('Necessário token de administrador')
   } catch (e) {
-    return res.status(401).json('Necessário token de administrador')
+    return res.status(401).json('Necessário token')
   }
   next();
 }
