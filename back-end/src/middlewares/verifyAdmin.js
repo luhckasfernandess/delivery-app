@@ -1,20 +1,19 @@
 const jwt = require('jsonwebtoken');
-const { User } = require('../database/models')
 const { Op } = require('sequelize');
-
+const { User } = require('../database/models');
 
 const verifyAdmin = async (req, res, next) => {
   const token = req.headers.authorization;
   try {
     const decryptToken = await jwt.verify(token, 'grupo20');
     const findAdmUser = await User.findOne({
-      where: { [Op.and]: [{ email: decryptToken.email }, { role: 'administrator' }] }
+      where: { [Op.and]: [{ email: decryptToken.email }, { role: 'administrator' }] },
     });
-    if (!findAdmUser) return res.status(401).json('Necessário token de administrador')
+    if (!findAdmUser) return res.status(401).json('Necessário token de administrador');
   } catch (e) {
-    return res.status(401).json('Necessário token')
+    return res.status(401).json('Necessário token');
   }
   next();
-}
+};
 
 module.exports = verifyAdmin;
