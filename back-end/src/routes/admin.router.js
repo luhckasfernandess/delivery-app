@@ -10,7 +10,6 @@ const AdminRouter = express.Router();
 
 AdminRouter.get('/admin', verifyAdmin, async (req, res, next) => {
   try {
-
     const token = req.headers.authorization;
     const allUsers = await getAllUsersAdminController(token);
     if (!allUsers.length) return res.status(401).json('Usuários não encontrados');
@@ -19,7 +18,6 @@ AdminRouter.get('/admin', verifyAdmin, async (req, res, next) => {
     next(e);
   }
 });
-
 
 AdminRouter.post('/admin/register', verifyAdmin, async (req, res, next) => {
   try {
