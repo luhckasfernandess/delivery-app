@@ -1,30 +1,45 @@
 import React from 'react';
-import { screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
+import { BrowserRouter } from 'react-router-dom';
 import userEvent from '@testing-library/user-event';
 import App from '../App';
-import renderWithRouter from './utils/renderWithRouter';
+// import renderWithRouter from './utils/renderWithRouter';
 
 describe('Testando a tela de login', () => {
-  const inputEmail = screen.getByTestId('common_login__input-email');
-  const inputPassword = screen.getByTestId('common_login__input-password');
-  const loginBtn = screen.getByTestId('common_login__button-login');
-  const singUpBtn = screen.getByTestId('common_login__button-login');
+  const emailInputId = 'common_login__input-email';
+  const passwordInputId = 'common_login__input-password';
+  const loginBtnId = 'common_login__button-login';
+  const singUpBtnId = 'common_login__button-register';
 
   it('Verifica se os inputs aparecem corretamente', () => {
-    renderWithRouter(<App />);
+    render(<App />, { wrapper: BrowserRouter });
+    const inputEmail = screen.getByTestId(emailInputId);
+    const inputPassword = screen.getByTestId(passwordInputId);
+    const loginBtn = screen.getByTestId(loginBtnId);
+    const singUpBtn = screen.getByTestId(singUpBtnId);
     expect(inputEmail).toBeInTheDocument();
     expect(inputPassword).toBeInTheDocument();
     expect(loginBtn).toBeInTheDocument();
     expect(singUpBtn).toBeInTheDocument();
   });
+
   it(`Verifica se o botão de login está inicialmente desabilitado,
    e não se habilita passando dados incorretos`, () => {
+    render(<App />, { wrapper: BrowserRouter });
+    const inputEmail = screen.getByTestId(emailInputId);
+    const inputPassword = screen.getByTestId(passwordInputId);
+    const loginBtn = screen.getByTestId(loginBtnId);
     expect(loginBtn).toBeDisabled();
     userEvent.type(inputEmail, 'invalidEmail');
     userEvent.type(inputPassword, '');
     expect(loginBtn).toBeDisabled();
   });
+
   it('Verifica se o botão de login é habilitado quando passados dados corretos', () => {
+    render(<App />, { wrapper: BrowserRouter });
+    const inputEmail = screen.getByTestId(emailInputId);
+    const inputPassword = screen.getByTestId(passwordInputId);
+    const loginBtn = screen.getByTestId(loginBtnId);
     userEvent.type(inputEmail, 'validEmail@email.com');
     userEvent.type(inputPassword, '123456');
     expect(loginBtn).not.toBeDisabled();
