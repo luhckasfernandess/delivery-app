@@ -76,7 +76,7 @@ describe('Testando a tela de login', () => {
     });
   });
 
-  it.only('Verifica se é possível fazer login com um usuário cadastrado', async () => {
+  it('Verifica se é possível fazer login com um usuário cadastrado', async () => {
     const responseMock = { data: { token: 'validToken', role: 'administrator' } };
     api.post = jest.fn().mockResolvedValue(responseMock);
     api.get = jest.fn().mockResolvedValue(responseMock);
