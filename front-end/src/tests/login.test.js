@@ -3,6 +3,7 @@ import { render, screen, waitFor } from '@testing-library/react';
 import { BrowserRouter, MemoryRouter } from 'react-router-dom';
 import userEvent from '@testing-library/user-event';
 import App from '../App';
+import api from '../services/requests';
 // import renderWithRouter from './utils/renderWithRouter';
 
 describe('Testando a tela de login', () => {
@@ -10,6 +11,9 @@ describe('Testando a tela de login', () => {
   const passwordInputId = 'common_login__input-password';
   const loginBtnId = 'common_login__button-login';
   const singUpBtnId = 'common_login__button-register';
+
+  beforeEach(() => jest.mock('../services/requests'));
+  // api.get.mockresolvedvalue()
 
   it('Verifica se os inputs aparecem corretamente', () => {
     render(<App />, { wrapper: BrowserRouter });
@@ -72,7 +76,13 @@ describe('Testando a tela de login', () => {
     });
   });
 
-  it('Verifica se é possível fazer login com um usuário cadastrado', async () => {
+  it.only('Verifica se é possível fazer login com um usuário cadastrado', async () => {
+    const responseMock = { data: { token: 'validToken', role: 'administrator' } };
+    api.post = jest.fn().mockResolvedValue(responseMock);
+    api.get = jest.fn().mockResolvedValue(responseMock);
+    // api.post.mockResolvedValue(responseMock);
+    // jest.spyOn(api, 'post').mockResolvedValue(responseMock);
+    // jest.spyOn(api, 'get').mockResolvedValue(responseMock);
     render(
       <MemoryRouter initialEntries={ ['/'] }>
         <App />
