@@ -1,14 +1,18 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
 import App from '../App';
+import api from '../services/requests';
 
 describe('testando a tela de administrador', () => {
+  beforeEach(() => jest.mock('../services/requests'));
+
   const admInputName = 'admin_manage__input-name';
   const admInputEmail = 'admin_manage__input-email';
   const admInputPassword = 'admin_manage__input-password';
-  const admBtnRegister = 'common_register__button-register';
+  const admBtnRegister = 'admin_manage__button-register';
   const route = '/admin/manage';
+
   it('Verifica se todos os elementos aparecem corretamente na tela', () => {
     render(
       <MemoryRouter initialEntries={ [route] }>
@@ -70,5 +74,46 @@ describe('testando a tela de administrador', () => {
     userEvent.type(inputPassword, '123456');
 
     expect(btnRegister).not.toBeDisabled();
+  });
+
+  it('Verifica se os usuários cadastrados são mostrados corretamente', async () => {
+    const responseMock = { data: [
+      {
+        id: 2,
+        name: 'Fulana Pereira',
+        email: 'fulana@deliveryapp.com',
+        role: 'seller',
+      },
+      {
+        id: 3,
+        name: 'Cliente Zé Birita',
+        email: 'zebirita@email.com',
+        role: 'customer',
+      },
+    ] };
+    localStorage.setItem('token', 'validToken');
+    api.get = jest.fn().mockResolvedValue(responseMock);
+
+    render(
+      <MemoryRouter initialEntries={ [route] }>
+        <App />
+      </MemoryRouter>,
+    );
+
+    await waitFor(() => {
+      screen.getByRole('columnheader', {
+        name: /fulana pereira/i,
+      });
+    });
+
+    const seller = screen.getByRole('columnheader', {
+      name: /fulana pereira/i,
+    });
+    const customer = screen.getByRole('columnheader', {
+      name: /cliente zé birita/i,
+    });
+
+    expect(seller).toBeInTheDocument();
+    expect(customer).toBeInTheDocument();
   });
 });
