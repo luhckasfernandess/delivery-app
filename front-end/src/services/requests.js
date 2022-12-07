@@ -22,3 +22,5 @@ export const deleteData = async (endpoint, body) => {
   const { data } = await api.delete(endpoint, { data: body });
   return data;
 };
+
+export default api;
