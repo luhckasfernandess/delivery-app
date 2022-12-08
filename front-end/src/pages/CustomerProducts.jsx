@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-// import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import NavBar from '../components/NavBar';
 import ProductsCard from '../components/ProductsCard';
 import { requestData } from '../services/requests';
@@ -7,14 +7,28 @@ import { requestData } from '../services/requests';
 export default function CustomerProducts() {
   const [products, setProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  // const navigate = useNavigate();
+  const dataUser = JSON.parse(localStorage.getItem('user'));
+  const { name } = dataUser;
+  const navigate = useNavigate();
 
   useEffect(() => {
     setIsLoading(true);
     requestData('/products')
-      .then((resp) => resp) // funçao fora chamada no useEfect
+      .then((resp) => resp)
       .then((data) => setProducts(data));
     setIsLoading(false);
+  }, []);
+
+  const validateToken = async () => {
+    const token = JSON.parse(localStorage.getItem('token'));
+    if (!token) {
+      localStorage.clear();
+      navigate('/login');
+    }
+  };
+
+  useEffect(() => {
+    validateToken();
   }, []);
 
   return (
@@ -26,7 +40,7 @@ export default function CustomerProducts() {
         path2="/customer/orders"
         dataTestid2="customer_products__element-navbar-link-orders"
         item2="MEUS PEDIDOS"
-        userName="Zé Birita"
+        userName={ name }
       />
       <div>
         { isLoading ? <h3>Carregando...</h3>
