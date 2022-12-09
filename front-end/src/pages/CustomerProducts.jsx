@@ -77,7 +77,11 @@ export default function CustomerProducts() {
       <div>
         <button
           type="button"
-          onClick={ () => {} }
+          onClick={ () => {
+            localStorage.setItem('cart', JSON.stringify(products));
+            localStorage.setItem('totalPrice', totalPrice);
+            navigate('/customer/checkout');
+          } }
           data-testid="customer_products__button-cart"
           disabled={ totalPrice === '0.00' }
         >
