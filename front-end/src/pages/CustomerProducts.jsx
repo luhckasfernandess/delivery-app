@@ -11,16 +11,8 @@ export default function CustomerProducts() {
   const { name } = dataUser;
   const navigate = useNavigate();
 
-  useEffect(() => {
-    setIsLoading(true);
-    requestData('/products')
-      .then((resp) => resp)
-      .then((data) => setProducts(data));
-    setIsLoading(false);
-  }, []);
-
   const validateToken = async () => {
-    const token = JSON.parse(localStorage.getItem('token'));
+    const { token } = JSON.parse(localStorage.getItem('user'));
     if (!token) {
       localStorage.clear();
       navigate('/login');
@@ -28,6 +20,11 @@ export default function CustomerProducts() {
   };
 
   useEffect(() => {
+    setIsLoading(true);
+    requestData('/products')
+      .then((resp) => resp)
+      .then((data) => setProducts(data));
+    setIsLoading(false);
     validateToken();
   }, []);
 
