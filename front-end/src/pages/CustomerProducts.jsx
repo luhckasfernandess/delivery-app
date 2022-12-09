@@ -6,10 +6,11 @@ import { requestData } from '../services/requests';
 
 export default function CustomerProducts() {
   const [products, setProducts] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const dataUser = JSON.parse(localStorage.getItem('user'));
   const { name } = dataUser;
   const navigate = useNavigate();
+  const [totalPrice, setTotalPrice] = useState('0.00');
 
   const validateToken = async () => {
     const { token } = JSON.parse(localStorage.getItem('user'));
@@ -19,12 +20,46 @@ export default function CustomerProducts() {
     }
   };
 
-  useEffect(() => {
-    setIsLoading(true);
-    requestData('/products')
-      .then((resp) => resp)
-      .then((data) => setProducts(data));
+  const pricePerQuantity = (arr) => (
+    arr.reduce((acc, curr) => (curr.quantity * +curr.price) + acc, 0)
+  );
+
+  const totalPriceCalc = (id, value) => {
+    const productsArray = [...products];
+    const indexProduct = productsArray.findIndex((element) => element.id === id);
+    productsArray[indexProduct].quantity = value;
+    setProducts([...productsArray]);
+    setTotalPrice(pricePerQuantity(productsArray).toFixed(2));
+    localStorage.setItem('cart', JSON.stringify(products));
+    localStorage.setItem('totalPrice', totalPrice);
+  };
+
+  const setCartFromLocalStorate = () => {
+    const cart = JSON.parse(localStorage.getItem('cart'));
+    if (!cart) {
+      return localStorage.setItem('cart', JSON.stringify([]));
+    }
+    setTotalPrice(pricePerQuantity(cart).toFixed(2));
+
+    return setProducts(cart);
+  };
+
+  const getAllProducts = async () => {
+    const allProducts = await requestData('/products');
+    const cartStorage = JSON.parse(localStorage.getItem('cart'));
+    if (!cartStorage || cartStorage.length === 0) {
+      const newProducts = allProducts.map((product) => ({ ...product, quantity: 0 }));
+      setProducts(newProducts);
+      setIsLoading(false);
+      return newProducts;
+    }
     setIsLoading(false);
+    return products;
+  };
+
+  useEffect(() => {
+    setCartFromLocalStorate();
+    getAllProducts();
     validateToken();
   }, []);
 
@@ -40,6 +75,19 @@ export default function CustomerProducts() {
         userName={ name }
       />
       <div>
+        <button
+          type="button"
+          onClick={ () => {} }
+          data-testid="customer_products__button-cart"
+          disabled={ totalPrice === '0.00' }
+        >
+          Ver carrinho: R$
+          <span
+            data-testid="customer_products__checkout-bottom-value"
+          >
+            {totalPrice.toString().replace('.', ',')}
+          </span>
+        </button>
         { isLoading ? <h3>Carregando...</h3>
           : products.map((product) => (
             <ProductsCard
@@ -48,6 +96,8 @@ export default function CustomerProducts() {
               price={ product.price }
               image={ product.urlImage }
               title={ product.name }
+              quantity={ product.quantity }
+              totalPriceCalc={ totalPriceCalc }
             />
           ))}
       </div>
