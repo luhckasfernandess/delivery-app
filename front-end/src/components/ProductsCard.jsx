@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
-export default function ProductsCard({ id, price, image, title }) {
-  const [counter, setCounter] = useState(0);
+export default function ProductsCard({
+  id, price, image, title, quantity, totalPriceCalc,
+}) {
+  const [counter, setCounter] = useState(quantity);
   return (
     <div>
       <div key={ id }>
@@ -27,6 +29,7 @@ export default function ProductsCard({ id, price, image, title }) {
           onClick={ () => {
             if (counter <= 0) return 0;
             setCounter(counter - 1);
+            totalPriceCalc(id, counter - 1);
           } }
         >
           -
@@ -35,13 +38,17 @@ export default function ProductsCard({ id, price, image, title }) {
           data-testid={ `customer_products__input-card-quantity-${id}` }
           value={ counter }
           onChange={ ({ target }) => {
-            if (Number(target.value)) setCounter(Number(target.value));
+            setCounter(+target.value);
+            totalPriceCalc(id, +target.value);
           } }
         />
         <button
           data-testid={ `customer_products__button-card-add-item-${id}` }
           type="button"
-          onClick={ () => { setCounter(counter + 1); } }
+          onClick={ () => {
+            setCounter(counter + 1);
+            totalPriceCalc(id, counter + 1);
+          } }
         >
           +
         </button>
