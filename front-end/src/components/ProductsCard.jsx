@@ -1,14 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
-export default function ProductsCard({ id, price, image, title }) {
+export default function ProductsCard({
+  id, price, image, title, quantity, totalPriceCalc,
+}) {
+  const [counter, setCounter] = useState(quantity);
   return (
     <div>
       <div key={ id }>
         <h3
           data-testid={ `customer_products__element-card-price-${id}` }
         >
-          { `R$ ${price}` }
+          { `R$ ${price.toString().replace('.', ',')}` }
         </h3>
         <img
           data-testid={ `customer_products__img-card-bg-image-${id}` }
@@ -23,16 +26,29 @@ export default function ProductsCard({ id, price, image, title }) {
         <button
           data-testid={ `customer_products__button-card-rm-item-${id}` }
           type="button"
+          onClick={ () => {
+            if (counter <= 0) return 0;
+            setCounter(counter - 1);
+            totalPriceCalc(id, counter - 1);
+          } }
         >
           -
         </button>
         <input
           data-testid={ `customer_products__input-card-quantity-${id}` }
-          value="0"
+          value={ counter }
+          onChange={ ({ target }) => {
+            setCounter(+target.value);
+            totalPriceCalc(id, +target.value);
+          } }
         />
         <button
           data-testid={ `customer_products__button-card-add-item-${id}` }
           type="button"
+          onClick={ () => {
+            setCounter(counter + 1);
+            totalPriceCalc(id, counter + 1);
+          } }
         >
           +
         </button>
