@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import NavBar from "../components/NavBar";
-import OrderCard from "../components/OrderCard";
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import NavBar from '../components/NavBar';
+import OrderCard from '../components/OrderCard';
 
 export default function CustomerOrders() {
   const [orders, setOrders] = useState([]);
@@ -18,31 +18,39 @@ export default function CustomerOrders() {
     }
   };
 
+  const getAllOrders = () => {
+    const mockOrders = [
+      { id: '001', status: 'pendente', date: '12/12/2022', price: 10.09 },
+    ];
+    setOrders(mockOrders);
+    setIsLoading(false);
+  };
+
   useEffect(() => {
-    validateToken()
-  }, [])
- return(
- <div>
-    <NavBar
-    path1="/customer/products"
-    dataTestid1="customer_products__element-navbar-link-products"
-    item1="PRODUTOS"
-    path2="/customer/orders"
-    dataTestid2="customer_products__element-navbar-link-orders"
-    item2="MEUS PEDIDOS"
-    userName={ name }
-    />
-    {isLoading ? <h3>Carregando...</h3> 
-    : orders.map((order) => (
-      <OrderCard
-        key={ order.id }
-        id={ order.id }
-        status={ order.status }
-        date={ order.date }
-        price={ order.price }
+    validateToken();
+    getAllOrders();
+  }, []);
+  return (
+    <div>
+      <NavBar
+        path1="/customer/products"
+        dataTestid1="customer_products__element-navbar-link-products"
+        item1="PRODUTOS"
+        path2="/customer/orders"
+        dataTestid2="customer_products__element-navbar-link-orders"
+        item2="MEUS PEDIDOS"
+        userName={ name }
       />
-    ))
-    }
- </div>
- )
+      {isLoading ? <h3>Carregando...</h3>
+        : orders.map((order) => (
+          <OrderCard
+            key={ order.id }
+            id={ order.id }
+            status={ order.status }
+            date={ order.date }
+            price={ order.price }
+          />
+        ))}
+    </div>
+  );
 }
