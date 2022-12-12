@@ -1,3 +1,5 @@
+import PropTypes from 'prop-types';
+
 export default function OrderCard({ id, status, date, price }) {
   return (
     <div>
