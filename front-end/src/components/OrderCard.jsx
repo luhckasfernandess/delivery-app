@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 
-export default function OrderCard({ id, status, date, price }) {
+export default function OrderCard({ id, status, date, totalPrice }) {
   return (
     <div>
       <div key={ id }>
@@ -22,7 +22,7 @@ export default function OrderCard({ id, status, date, price }) {
         <h3
           data-testid={ `customer_orders__element-card-price-${id}` }
         >
-          { `R$ ${price.toString().replace('.', ',')}` }
+          { `R$${totalPrice.replace('.', ',')}` }
         </h3>
       </div>
     </div>
@@ -31,7 +31,7 @@ export default function OrderCard({ id, status, date, price }) {
 
 OrderCard.propTypes = {
   id: PropTypes.number,
-  price: PropTypes.string,
+  totalPrice: PropTypes.string,
   status: PropTypes.string,
   date: PropTypes.string,
 }.isRequired;

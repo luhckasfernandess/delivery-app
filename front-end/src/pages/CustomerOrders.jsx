@@ -2,12 +2,13 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import NavBar from '../components/NavBar';
 import OrderCard from '../components/OrderCard';
+import { requestData } from '../services/requests';
 
 export default function CustomerOrders() {
   const [orders, setOrders] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const dataUser = JSON.parse(localStorage.getItem('user'));
-  const { name } = dataUser;
+  const { name, id } = dataUser;
   const navigate = useNavigate();
 
   const validateToken = async () => {
@@ -18,11 +19,9 @@ export default function CustomerOrders() {
     }
   };
 
-  const getAllOrders = () => {
-    const mockOrders = [
-      { id: '001', status: 'pendente', date: '12/12/2022', price: 10.09 },
-    ];
-    setOrders(mockOrders);
+  const getAllOrders = async () => {
+    const orders = await requestData(`/orders/${id}`);
+    setOrders(orders);
     setIsLoading(false);
   };
 
@@ -47,8 +46,8 @@ export default function CustomerOrders() {
             key={ order.id }
             id={ order.id }
             status={ order.status }
-            date={ order.date }
-            price={ order.price }
+            date={ order.saleDate }
+            totalPrice={ order.totalPrice }
           />
         ))}
     </div>

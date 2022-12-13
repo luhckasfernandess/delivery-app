@@ -26,6 +26,7 @@ const getUserService = async (token) => {
       name: result.dataValues.name,
       email: result.dataValues.email,
       role: result.dataValues.role,
+      id: result.dataValues.id,
     };
     return user;
  } return result;
