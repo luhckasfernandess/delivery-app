@@ -1,7 +1,14 @@
 const express = require('express');
 const { Sale } = require('../database/models');
+const { insertSaleController } = require('../controller/sale.controller');
 
 const SaleRouter = express.Router();
+
+SaleRouter.post('/checkout', async (req, res) => {
+  const { body } = req;
+  const insertSale = await insertSaleController(body);
+  return res.status(201).json(insertSale);
+});
 
 SaleRouter.get('/products/:id', async (req, res) => {
   const { id } = req.params;
@@ -16,5 +23,6 @@ SaleRouter.get('/orders/:id', async (req, res) => {
   });
   return res.status(200).json(result);
 });
+
 
 module.exports = SaleRouter;

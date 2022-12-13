@@ -6,6 +6,8 @@ import Register from './pages/Register';
 import Admin from './pages/Admin';
 import CustomerProducts from './pages/CustomerProducts';
 import CustomerOrders from './pages/CustomerOrders';
+import CustomerCheckout from './pages/CustomerCheckout';
+
 
 function App() {
   return (
@@ -16,6 +18,8 @@ function App() {
       <Route path="/" element={ <Navigate to="/login" /> } />
       <Route path="/customer/products" element={ <CustomerProducts /> } />
       <Route path="/customer/orders" element={ <CustomerOrders /> } />
+      <Route path="/customer/checkout" element={ <CustomerCheckout /> } />
+
     </Routes>
   );
 }
