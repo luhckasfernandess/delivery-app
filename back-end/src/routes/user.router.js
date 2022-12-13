@@ -1,6 +1,7 @@
 const express = require('express');
 
 const UsersRouter = express.Router();
+const { getAllUsersByRole } = require('../service/user.service');
 const {
   checkUserController,
   getUserController,
@@ -35,6 +36,15 @@ UsersRouter.post('/register', async (req, res, next) => {
     const newUser = await createNewUserController(req.body);
     if (!newUser) return res.status(409).json('Nome ou Email já existente');
     return res.status(201).json('Usuário criado');
+  } catch (e) {
+    next(e);
+  }
+});
+
+UsersRouter.get('/sellers', async (_req, res, next) => {
+  try {
+    const allSellers = await getAllUsersByRole('seller');
+    return res.status(200).json(allSellers);
   } catch (e) {
     next(e);
   }

@@ -79,6 +79,14 @@ const deleteUserService = async (user) => {
   return userDelete;
 };
 
+const getAllUsersByRole = async (role) => {
+  const allUsers = await User.findAll({
+    attributes: { exclude: ['password'] },
+    where: { role },
+  });
+  return allUsers;
+};
+
 module.exports = {
   checkUserService,
   getUserService,
@@ -86,4 +94,5 @@ module.exports = {
   getAllUsers,
   registerNewUserService,
   deleteUserService,
+  getAllUsersByRole,
 };
