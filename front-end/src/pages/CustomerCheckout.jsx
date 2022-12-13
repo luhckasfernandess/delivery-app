@@ -4,7 +4,8 @@ import { useNavigate } from 'react-router-dom';
 export default function CustomerCheckout() {
   const takeEachProducts = localStorage.getItem('cart');
   const objProducts = JSON.parse(takeEachProducts);
-  let count = 0;
+  let count = 0; let
+    cartIndex = 0;
 
   const navigate = useNavigate();
   const [products, setProducts] = useState(objProducts);
@@ -62,7 +63,7 @@ export default function CustomerCheckout() {
       body: JSON.stringify(body),
     })
       .then((result) => result.json())
-      .then((id) => navigate(`/customer/order/${id}`))
+      .then((id) => navigate(`/customer/orders/${id}`))
       .catch((e) => console.log(e));
   };
 
@@ -92,24 +93,48 @@ export default function CustomerCheckout() {
           {products.map((item, i) => {
             if (item.quantity > 0) {
               count += 1;
+              cartIndex = (count - 1);
               return (
-                <tr
-                  // dataTestId={`element_order_table-customer-sale-product-${i}`}
-                  key={ i }
-                >
-                  <td>{count}</td>
-                  <td>{item.name}</td>
-                  <td>{item.quantity}</td>
-                  <td>
-                    R$
-                    {item.price}
+                <tr key={ i }>
+                  <td
+                    data-testid={ `customer_checkout__element-order-table-item-number-
+                    ${cartIndex}` }
+                  >
+                    {count}
+                  </td>
+                  <td
+                    data-testid={ `customer_checkout__element-order-table-name-
+                    ${cartIndex}` }
+                  >
+                    {item.name}
+                  </td>
+                  <td
+                    data-testid={ `customer_checkout__element-order-table-quantity-
+                    ${cartIndex}` }
+                  >
+                    {item.quantity}
+                  </td>
+                  <td
+                    data-testid={ `customer_checkout__element-order-table-unit-price-
+                    ${cartIndex}` }
+                  >
+
+                    {item.price.replace('.', ',')}
+                  </td>
+                  <td
+                    data-testid={ `customer_checkout__element-order-table-sub-total-
+                    ${cartIndex}` }
+                  >
+
+                    {(item.quantity * item.price).toFixed(2).replace('.', ',')}
                   </td>
                   <td>
-                    R$
-                    {(item.quantity * item.price).toFixed(2)}
-                  </td>
-                  <td>
-                    <button type="button" onClick={ () => removeProduct(i) }>
+                    <button
+                      data-testid={ `customer_checkout__element-order-table-remove-
+                      ${cartIndex}` }
+                      type="button"
+                      onClick={ () => removeProduct(i) }
+                    >
                       Remover
                     </button>
                   </td>
@@ -120,15 +145,18 @@ export default function CustomerCheckout() {
           })}
         </tbody>
       </table>
-      <p>
-        Total R$:
-        {totalPrice()}
+      <p data-testid="customer_checkout__element-order-total-price">
+        {totalPrice().replace('.', ',')}
       </p>
       <h1>Detalhes da entrega</h1>
       <div>
         <label htmlFor="Vendedor">
           Vendedor
-          <select name="Vendedor" onChange={ handleChange }>
+          <select
+            name="Vendedor"
+            onChange={ handleChange }
+            data-testid="customer_checkout__select-seller"
+          >
             {sellers.map((item, i) => (
               <option key={ i } value={ item.id }>
                 {item.name}
@@ -145,6 +173,7 @@ export default function CustomerCheckout() {
             name="Endereco"
             onChange={ handleChange }
             value={ sendInfo.Endereco }
+            data-testid="customer_checkout__input-address"
           />
         </label>
       </div>
@@ -152,14 +181,21 @@ export default function CustomerCheckout() {
         <label htmlFor="Numero">
           Numero
           <input
-            type="number"
+            type="text"
             name="Numero"
             onChange={ handleChange }
             value={ sendInfo.Numero }
+            data-testid="customer_checkout__input-address-number"
           />
         </label>
       </div>
-      <button type="button" onClick={ () => checkout(sendInfo) }>FINALIZAR PEDIDO</button>
+      <button
+        data-testid="customer_checkout__button-submit-order"
+        type="button"
+        onClick={ () => checkout(sendInfo) }
+      >
+        FINALIZAR PEDIDO
+      </button>
     </div>
   );
 }
