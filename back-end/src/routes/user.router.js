@@ -1,6 +1,7 @@
 const express = require('express');
 
 const UsersRouter = express.Router();
+const { getAllUsersByRole } = require('../service/user.service')
 const {
   checkUserController,
   getUserController,
@@ -39,5 +40,14 @@ UsersRouter.post('/register', async (req, res, next) => {
     next(e);
   }
 });
+
+UsersRouter.get('/sellers', async (_req, res, next) => {
+  try {
+    const allSellers = await getAllUsersByRole('seller')
+    return res.status(200).json(allSellers)
+  } catch (e) {
+    next(e);
+  }
+})
 
 module.exports = UsersRouter;
