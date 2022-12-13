@@ -20,8 +20,8 @@ export default function CustomerOrders() {
   };
 
   const getAllOrders = async () => {
-    const orders = await requestData(`/orders/${id}`);
-    setOrders(orders);
+    const resultOrders = await requestData(`/orders/${id}`);
+    setOrders(resultOrders);
     setIsLoading(false);
   };
 
