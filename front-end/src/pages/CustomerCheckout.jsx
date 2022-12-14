@@ -104,35 +104,40 @@ export default function CustomerCheckout() {
                     {count}
                   </td>
                   <td
-                    data-testid={ `customer_checkout__element-order-table-name-
-                    ${cartIndex}` }
+                    data-testid={
+                      `customer_checkout__element-order-table-name-${cartIndex}`
+                    }
                   >
                     {item.name}
                   </td>
                   <td
-                    data-testid={ `customer_checkout__element-order-table-quantity-
-                    ${cartIndex}` }
+                    data-testid={
+                      `customer_checkout__element-order-table-quantity-${cartIndex}`
+                    }
                   >
                     {item.quantity}
                   </td>
                   <td
-                    data-testid={ `customer_checkout__element-order-table-unit-price-
-                    ${cartIndex}` }
+                    data-testid={
+                      `customer_checkout__element-order-table-unit-price-${cartIndex}`
+                    }
                   >
 
                     {item.price.replace('.', ',')}
                   </td>
                   <td
-                    data-testid={ `customer_checkout__element-order-table-sub-total-
-                    ${cartIndex}` }
+                    data-testid={
+                      `customer_checkout__element-order-table-sub-total-${cartIndex}`
+                    }
                   >
 
                     {(item.quantity * item.price).toFixed(2).replace('.', ',')}
                   </td>
                   <td>
                     <button
-                      data-testid={ `customer_checkout__element-order-table-remove-
-                      ${cartIndex}` }
+                      data-testid={
+                        `customer_checkout__element-order-table-remove-${cartIndex}`
+                      }
                       type="button"
                       onClick={ () => removeProduct(i) }
                     >
