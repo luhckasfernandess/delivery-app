@@ -29,9 +29,9 @@ function Login() {
 
       setToken(token);
 
-      const { role, name } = await requestData('/login');
+      const { role, name, id } = await requestData('/login');
 
-      const dataUser = { name, email, role, token };
+      const dataUser = { name, email, role, token, id };
       localStorage.setItem('user', JSON.stringify(dataUser));
 
       localStorage.setItem('token', token);
