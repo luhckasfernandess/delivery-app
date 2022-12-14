@@ -8,7 +8,6 @@ import CustomerProducts from './pages/CustomerProducts';
 import CustomerOrders from './pages/CustomerOrders';
 import CustomerCheckout from './pages/CustomerCheckout';
 
-
 function App() {
   return (
     <Routes>
