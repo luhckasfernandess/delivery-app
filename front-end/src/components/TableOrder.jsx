@@ -1,4 +1,8 @@
-export default function TableOrder() {
+import PropTypes from 'prop-types';
+
+export default function TableOrder({ products }) {
+  let count = 0;
+  let cartIndex = 0;
   return (
     <table width="100%" border="1">
       <thead>
@@ -19,28 +23,28 @@ export default function TableOrder() {
               <tr key={ i }>
                 <td
                   data-testid={
-                    `customer_checkout__element-order-table-item-number-${cartIndex}`
+                    `customer_order_details__element-order-table-item-number-${cartIndex}`
                   }
                 >
                   {count}
                 </td>
                 <td
                   data-testid={
-                    `customer_checkout__element-order-table-name-${cartIndex}`
+                    `customer_order_details__element-order-table-name-${cartIndex}`
                   }
                 >
                   {item.name}
                 </td>
                 <td
                   data-testid={
-                    `customer_checkout__element-order-table-quantity-${cartIndex}`
+                    `ccustomer_order_details__element-order-table-quantity-${cartIndex}`
                   }
                 >
                   {item.quantity}
                 </td>
                 <td
                   data-testid={
-                    `customer_checkout__element-order-table-unit-price-${cartIndex}`
+                    `customer_order_details__element-order-table-unit-price-${cartIndex}`
                   }
                 >
 
@@ -48,22 +52,11 @@ export default function TableOrder() {
                 </td>
                 <td
                   data-testid={
-                    `customer_checkout__element-order-table-sub-total-${cartIndex}`
+                    `customer_order_details__element-order-table-sub-total-${cartIndex}`
                   }
                 >
 
                   {(item.quantity * item.price).toFixed(2).replace('.', ',')}
-                </td>
-                <td>
-                  <button
-                    data-testid={
-                      `customer_checkout__element-order-table-remove-${cartIndex}`
-                    }
-                    type="button"
-                    onClick={ () => removeProduct(i) }
-                  >
-                    Remover
-                  </button>
                 </td>
               </tr>
             );
@@ -74,3 +67,7 @@ export default function TableOrder() {
     </table>
   );
 }
+
+TableOrder.propTypes = {
+  products: PropTypes.any,
+}.isRequired;
