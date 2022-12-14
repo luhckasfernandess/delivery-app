@@ -12,6 +12,18 @@ function Login() {
   const [roleData, setRoleData] = useState('');
   const navigate = useNavigate();
 
+  const verifyLogin = () => {
+    try {
+      const { role } = JSON.parse(localStorage.getItem('user'));
+    if(role) {
+      setRoleData(role);
+      setIsLogged(true);
+    }
+    } catch (error) {
+      setFailedTryLogin(true);
+    }
+  };
+
   const verifyLoginForm = () => {
     const regex = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/gi;
     const minPasswordLength = 6;
@@ -41,6 +53,10 @@ function Login() {
       setFailedTryLogin(true);
     }
   };
+
+  useEffect(() => {
+    verifyLogin();
+  }, []);
 
   useEffect(() => {
     setFailedTryLogin(false);
