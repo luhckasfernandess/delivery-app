@@ -97,8 +97,9 @@ export default function CustomerCheckout() {
               return (
                 <tr key={ i }>
                   <td
-                    data-testid={ `customer_checkout__element-order-table-item-number-
-                    ${cartIndex}` }
+                    data-testid={
+                      `customer_checkout__element-order-table-item-number-${cartIndex}`
+                    }
                   >
                     {count}
                   </td>
