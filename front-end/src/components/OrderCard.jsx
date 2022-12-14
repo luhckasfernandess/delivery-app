@@ -1,8 +1,10 @@
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
 export default function OrderCard({ id, status, date, totalPrice }) {
   return (
     <div>
+      <Link to={ id.toString() } >
       <div key={ id }>
         <h3
           data-testid={ `customer_orders__element-order-id-${id}` }
@@ -25,6 +27,7 @@ export default function OrderCard({ id, status, date, totalPrice }) {
           { `R$${totalPrice.replace('.', ',')}` }
         </h3>
       </div>
+      </Link>
     </div>
   );
 }
