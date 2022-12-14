@@ -15,10 +15,10 @@ function Login() {
   const verifyLogin = () => {
     try {
       const { role } = JSON.parse(localStorage.getItem('user'));
-    if(role) {
-      setRoleData(role);
-      setIsLogged(true);
-    }
+      if (role) {
+        setRoleData(role);
+        setIsLogged(true);
+      }
     } catch (error) {
       setFailedTryLogin(true);
     }
